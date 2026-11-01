@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UBA Webcampus Mobile</title>
+    <!-- Librería de Íconos estilo Web (Font Awesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             box-sizing: border-box;
@@ -32,7 +34,7 @@
         .header-back-btn {
             position: absolute;
             left: 15px;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             cursor: pointer;
             display: none;
             color: #333;
@@ -43,16 +45,9 @@
             left: 15px;
             top: 50%;
             transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
+            font-size: 1.1rem;
+            color: #333;
             cursor: pointer;
-        }
-
-        .menu-icon span {
-            width: 20px;
-            height: 2px;
-            background-color: #333;
         }
 
         .header-title {
@@ -77,7 +72,7 @@
             display: flex;
             justify-content: space-around;
             border-bottom: 1px solid #e0e0e0;
-            padding-top: 8px;
+            padding-top: 10px;
             background: #fff;
         }
 
@@ -89,14 +84,14 @@
             cursor: pointer;
             width: 33.33%;
             color: #888;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 500;
             position: relative;
         }
 
-        .top-tab .tab-icon {
-            font-size: 1.4rem;
-            margin-bottom: 4px;
+        .top-tab i {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
         }
 
         .top-tab.active {
@@ -114,27 +109,42 @@
             background-color: #002B66;
         }
 
-        /* BANNER Y CALENDARIO INICIO */
+        /* CARRUSEL DE BANNERS (AJUSTADO PARA QUE SE VEA TODO TU DISEÑO) */
         .banner-container { padding: 15px; }
-        .banner-card {
-            background-color: #002B66;
-            color: white;
+        
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 130px; /* Altura optimizada para que respire el diseño */
             border-radius: 12px;
-            padding: 15px;
+            overflow: hidden;
+            background-color: #002B66; /* Fondo institucional por si la proporción deja espacio */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
             display: flex;
-            gap: 15px;
             align-items: center;
+            justify-content: center;
         }
-        .banner-badge {
-            background-color: #0091DA;
-            padding: 18px 10px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 0.85rem;
+
+        .carousel-slide.active {
+            opacity: 1;
         }
-        .banner-info h3 { font-size: 0.95rem; margin-bottom: 5px; }
-        .banner-info ul { font-size: 0.72rem; padding-left: 14px; color: #e0e0e0; }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Cambiado a contain para que no se corte nada de lo que hiciste */
+            border-radius: 12px;
+        }
 
         .calendar-header {
             display: flex;
@@ -142,7 +152,7 @@
             align-items: center;
             padding: 5px 25px 10px;
             color: #8bb3e6;
-            font-size: 1.1rem;
+            font-size: 0.9rem;
         }
         .week-days { display: flex; justify-content: space-between; padding: 0 10px; text-align: center; }
         .day-col { flex: 1; display: flex; flex-direction: column; align-items: center; }
@@ -205,7 +215,9 @@
         }
 
         .badge-inscripto {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             background-color: #e6f4ea;
             color: #137333;
             border: 1px solid #ceebe1;
@@ -237,7 +249,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         .notif-text-content p {
@@ -254,6 +266,39 @@
         }
 
         /* TRÁMITES */
+        .search-bar-container {
+            display: flex;
+            align-items: center;
+            background: #f1f3f4;
+            border-radius: 20px;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+        }
+
+        .search-bar-container i {
+            color: #666;
+            font-size: 0.9rem;
+            margin-right: 10px;
+        }
+
+        .search-bar-container input {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 0.85rem;
+            width: 100%;
+            color: #333;
+        }
+
+        .section-subtitle {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #555;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
         .tramite-card {
             background: #ffffff;
             border-radius: 10px;
@@ -353,7 +398,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: #001a3d;
         }
 
@@ -412,6 +457,107 @@
         .novedad-card p { font-size: 0.8rem; color: #444; }
         .novedad-date { font-size: 0.7rem; color: #888; margin-top: 4px; text-align: right; }
 
+        /* MODAL DE CREDENCIAL DIGITAL */
+        .modal-credencial {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.65);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-credencial.active {
+            display: flex;
+        }
+
+        .credencial-card {
+            background-color: #002B66;
+            color: #ffffff;
+            border-radius: 18px;
+            width: 100%;
+            max-width: 340px;
+            padding: 25px 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            text-align: center;
+            position: relative;
+            border: 2px solid #0091DA;
+        }
+
+        .credencial-header {
+            font-size: 0.8rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #8bb3e6;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .credencial-nombre {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #ffffff;
+        }
+
+        .credencial-legajo {
+            display: inline-block;
+            background-color: #0091DA;
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 4px 14px;
+            border-radius: 12px;
+            margin-bottom: 18px;
+        }
+
+        .credencial-info {
+            text-align: left;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .credencial-info div span {
+            color: #8bb3e6;
+            font-weight: 500;
+        }
+
+        .qr-box {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-bottom: 18px;
+        }
+
+        .qr-box img {
+            width: 130px;
+            height: 130px;
+            display: block;
+        }
+
+        .btn-cerrar-credencial {
+            background-color: #ffffff;
+            color: #002B66;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-cerrar-credencial:active {
+            background-color: #e0e0e0;
+        }
+
         /* NAVEGACIÓN INFERIOR */
         .bottom-navigation {
             position: fixed;
@@ -435,7 +581,7 @@
             cursor: pointer;
         }
 
-        .nav-button .icon-nav { font-size: 1.2rem; margin-bottom: 2px; }
+        .nav-button i { font-size: 1.1rem; margin-bottom: 3px; }
         .nav-button.active { color: #002B66; font-weight: bold; }
         .qr-button {
             background-color: #0091DA;
@@ -444,17 +590,16 @@
             padding: 6px;
             margin-top: -12px;
         }
+        .qr-button i { font-size: 1.2rem; }
     </style>
 </head>
 <body>
 
     <!-- Encabezado con título dinámico -->
     <div class="top-header">
-        <span class="header-back-btn" id="backBtn" onclick="mostrarInicio()">←</span>
+        <span class="header-back-btn" id="backBtn" onclick="mostrarInicio()"><i class="fa-solid fa-arrow-left"></i></span>
         <div class="menu-icon" id="menuBtn">
-            <span></span>
-            <span></span>
-            <span></span>
+            <i class="fa-solid fa-bars"></i>
         </div>
         <div class="header-title" id="headerTitle">WEBCAMPUS MOBILE</div>
     </div>
@@ -464,15 +609,15 @@
         <!-- Pestañas Superiores -->
         <div class="top-tabs">
             <div class="top-tab active" id="tabMiUba" onclick="cambiarPestanaSuperior('miUba', this)">
-                <span class="tab-icon">🏠</span>
+                <i class="fa-solid fa-house"></i>
                 <span>MI UBA</span>
             </div>
             <div class="top-tab" id="tabNovedades" onclick="cambiarPestanaSuperior('novedades', this)">
-                <span class="tab-icon">🔖</span>
+                <i class="fa-solid fa-bookmark"></i>
                 <span>NOVEDADES</span>
             </div>
             <div class="top-tab" id="tabEventos" onclick="cambiarPestanaSuperior('eventos', this)">
-                <span class="tab-icon">📅</span>
+                <i class="fa-solid fa-calendar-days"></i>
                 <span>EVENTOS</span>
             </div>
         </div>
@@ -480,23 +625,21 @@
         <!-- CONTENIDO PESTAÑA 1: MI UBA -->
         <div id="sec-miUba" class="main-tab-content active">
             <div class="banner-container">
-                <div class="banner-card">
-                    <div class="banner-badge">fadu<br>uba</div>
-                    <div class="banner-info">
-                        <h3>¡Bienvenido al Semestre 2026!</h3>
-                        <ul>
-                            <li>• Revisa tus entregas de Taller.</li>
-                            <li>• Talleres de maquetación activos.</li>
-                            <li>• Ciudad Universitaria.</li>
-                        </ul>
+                <!-- CARRUSEL CON TUS IMÁGENES AJUSTADAS -->
+                <div class="carousel-container">
+                    <div class="carousel-slide active">
+                        <img src="semestrebannerdos.png" onerror="this.src='semestrebannerdos.jpg'" alt="Bienvenido al Semestre 2026">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="semestrebanneruno.png" onerror="this.src='semestrebanneruno.jpg'" alt="Feria de Empresas FADU">
                     </div>
                 </div>
             </div>
 
             <div class="calendar-header">
-                <span>&lt;</span>
+                <i class="fa-solid fa-chevron-left"></i>
                 <span>noviembre 2026</span>
-                <span>&gt;</span>
+                <i class="fa-solid fa-chevron-right"></i>
             </div>
 
             <div class="week-days">
@@ -531,7 +674,7 @@
             <div class="evento-card">
                 <h4>Expoempleo en el Pabellón III</h4>
                 <p>Lugar: Hall Central - Pabellón III, Ciudad Universitaria.<br>Horario: 10:00 a 18:00 hs.</p>
-                <div class="badge-inscripto">✔ Inscripto 30/11 11:00 hs</div>
+                <div class="badge-inscripto"><i class="fa-solid fa-check"></i> Inscripto 30/11 11:00 hs</div>
             </div>
         </div>
     </div>
@@ -539,7 +682,7 @@
     <!-- ==================== VISTA: NOTIFICACIONES ==================== -->
     <div id="vistaNotificaciones" class="view-section" style="padding: 15px;">
         <div class="notif-item">
-            <div class="notif-icon-circle">💬</div>
+            <div class="notif-icon-circle"><i class="fa-solid fa-comment"></i></div>
             <div class="notif-text-content">
                 <p>Gustavo Negro comentó tu publicación en padlet</p>
                 <div class="notif-time">Hace 15 min</div>
@@ -547,7 +690,7 @@
         </div>
 
         <div class="notif-item">
-            <div class="notif-icon-circle">📝</div>
+            <div class="notif-icon-circle"><i class="fa-solid fa-pen-to-square"></i></div>
             <div class="notif-text-content">
                 <p>No olvides anotarte a las materias del próximo cuatrimestre</p>
                 <div class="notif-time">Hace 2 horas</div>
@@ -555,7 +698,7 @@
         </div>
 
         <div class="notif-item">
-            <div class="notif-icon-circle">🏢</div>
+            <div class="notif-icon-circle"><i class="fa-solid fa-building"></i></div>
             <div class="notif-text-content">
                 <p>No te pierdas la próxima feria de empresas en el pabellón III</p>
                 <div class="notif-time">Ayer, 18:30 hs</div>
@@ -565,14 +708,18 @@
 
     <!-- ==================== VISTA: TRÁMITES ==================== -->
     <div id="vistaTramites" class="view-section" style="padding: 15px;">
+        <div class="search-bar-container">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Buscar trámite">
+        </div>
+
+        <div class="section-subtitle">Mis trámites</div>
+
         <div class="tramite-card">
-            <p>Tu pedido de recuperatorio para Estructura I fue aceptado por el Departamento de alumnos <span class="leer-mas">leer más...</span></p>
+            <p>Inscripción a 1er recuperatorio IPC cátedra Buacar en curso <span class="leer-mas">leer más...</span></p>
         </div>
         <div class="tramite-card">
             <p>Tu solicitud de inscripción a UBA Deportes sigue en curso <span class="leer-mas">leer más...</span></p>
-        </div>
-        <div class="tramite-card">
-            <p>¡Ya estás en la segunda etapa de tu constancia de alumno regular <span class="leer-mas">leer más...</span></p>
         </div>
     </div>
 
@@ -590,11 +737,11 @@
         <div id="sub-archivos" class="sub-content active">
             <div class="file-card">
                 <div class="file-card-title">Apuntes del profesor</div>
-                <div class="file-card-icon">👥</div>
+                <div class="file-card-icon"><i class="fa-solid fa-user-group"></i></div>
             </div>
             <div class="file-card">
                 <div class="file-card-title">Apuntes de la materia</div>
-                <div class="file-card-icon">📁</div>
+                <div class="file-card-icon"><i class="fa-solid fa-folder"></i></div>
             </div>
         </div>
 
@@ -665,31 +812,54 @@
         </div>
     </div>
 
+    <!-- ==================== MODAL CREDENCIAL DIGITAL ==================== -->
+    <div id="modalCredencial" class="modal-credencial">
+        <div class="credencial-card">
+            <div class="credencial-header">Credencial Digital UBA FADU</div>
+            
+            <div class="credencial-nombre">Abril Durante</div>
+            <div class="credencial-legajo">Estudiante 123456</div>
+
+            <div class="credencial-info">
+                <div><span>Sede:</span> Ciudad Universitaria</div>
+                <div><span>Carrera:</span> Arquitectura</div>
+            </div>
+
+            <div class="qr-box">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=UBA-ESTUDIANTE-123456-ABRIL-DURANTE" alt="Código QR Credencial">
+            </div>
+
+            <div>
+                <button class="btn-cerrar-credencial" onclick="cerrarCredencial()">Cerrar Credencial</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Menú Fijo Inferior -->
     <div class="bottom-navigation">
         <div class="nav-button active" id="btnInicioNav" onclick="mostrarInicio()">
-            <span class="icon-nav">🏠</span>
+            <i class="fa-solid fa-house"></i>
             <span>Inicio</span>
         </div>
         <div class="nav-button" id="btnNotifNav" onclick="mostrarNotificaciones()">
-            <span class="icon-nav">🔔</span>
+            <i class="fa-solid fa-bell"></i>
             <span>Notificaciones</span>
         </div>
-        <div class="nav-button qr-button">
-            <span class="icon-nav">📱</span>
+        <div class="nav-button qr-button" onclick="abrirCredencial()">
+            <i class="fa-solid fa-qrcode"></i>
             <span>Credencial</span>
         </div>
         <div class="nav-button" id="btnTramitesNav" onclick="mostrarTramites()">
-            <span class="icon-nav">🎓</span>
+            <i class="fa-solid fa-graduation-cap"></i>
             <span>Trámites</span>
         </div>
         <div class="nav-button" id="btnCursosNav" onclick="mostrarCursos()">
-            <span class="icon-nav">📚</span>
+            <i class="fa-solid fa-book-open"></i>
             <span>Mis Cursos</span>
         </div>
     </div>
 
-    <!-- JAVASCRIPT DE NAVEGACIÓN -->
+    <!-- JAVASCRIPT DE NAVEGACIÓN Y CARRUSEL -->
     <script>
         function cambiarPestanaSuperior(nombrePestana, elemento) {
             document.querySelectorAll('.main-tab-content').forEach(sec => sec.classList.remove('active'));
@@ -716,7 +886,7 @@
             document.getElementById('vistaInicio').classList.add('active');
 
             document.getElementById('headerTitle').innerText = 'WEBCAMPUS MOBILE';
-            document.getElementById('menuBtn').style.display = 'flex';
+            document.getElementById('menuBtn').style.display = 'block';
             document.getElementById('backBtn').style.display = 'none';
 
             document.getElementById('btnInicioNav').classList.add('active');
@@ -762,6 +932,29 @@
             document.getElementById('sub-' + nombreSubTab).classList.add('active');
             elementoTab.classList.add('active');
         }
+
+        /* FUNCIONES DE LA CREDENCIAL DIGITAL */
+        function abrirCredencial() {
+            document.getElementById('modalCredencial').classList.add('active');
+        }
+
+        function cerrarCredencial() {
+            document.getElementById('modalCredencial').classList.remove('active');
+        }
+
+        /* SCRIPT PARA ROTAR EL CARRUSEL AUTOMÁTICAMENTE */
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+
+        function siguienteSlide() {
+            if (slides.length === 0) return;
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        // Cambia de imagen cada 3.5 segundos
+        setInterval(siguienteSlide, 3500);
     </script>
 
 </body>
