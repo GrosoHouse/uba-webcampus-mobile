@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UBA Webcampus Mobile</title>
-    <!-- Librería de Íconos estilo Web (Font Awesome) -->
+    <!-- Librería de Íconos Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -109,16 +109,16 @@
             background-color: #002B66;
         }
 
-        /* CARRUSEL DE BANNERS (AJUSTADO PARA QUE SE VEA TODO TU DISEÑO) */
+        /* CARRUSEL DE BANNERS */
         .banner-container { padding: 15px; }
         
         .carousel-container {
             position: relative;
             width: 100%;
-            height: 130px; /* Altura optimizada para que respire el diseño */
+            height: 120px;
             border-radius: 12px;
             overflow: hidden;
-            background-color: #002B66; /* Fondo institucional por si la proporción deja espacio */
+            background-color: #002B66;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
@@ -142,26 +142,186 @@
         .carousel-slide img {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Cambiado a contain para que no se corte nada de lo que hiciste */
+            object-fit: contain;
             border-radius: 12px;
         }
 
-        .calendar-header {
+        /* ESTRUCTURA CALENDARIO / CRONOGRAMA */
+        .calendar-wrapper {
+            padding: 5px 15px 20px;
+        }
+
+        .month-selector {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 5px 25px 10px;
+            padding: 5px 15px 15px;
             color: #8bb3e6;
-            font-size: 0.9rem;
+            font-size: 1.05rem;
+            font-weight: 500;
         }
-        .week-days { display: flex; justify-content: space-between; padding: 0 10px; text-align: center; }
-        .day-col { flex: 1; display: flex; flex-direction: column; align-items: center; }
-        .day-name { font-size: 0.7rem; color: #999; margin-bottom: 8px; }
-        .day-number {
-            font-size: 0.85rem; color: #666; width: 32px; height: 32px;
-            display: flex; align-items: center; justify-content: center; border-radius: 50%;
+
+        .month-selector i {
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #abcbf5;
         }
-        .day-col.selected .day-number { background-color: #002B66; color: white; }
+
+        .week-grid {
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 0 5px;
+        }
+
+        .day-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .day-title {
+            font-size: 0.68rem;
+            color: #a0aec0;
+            font-weight: 600;
+        }
+
+        .day-num {
+            font-size: 0.88rem;
+            color: #718096;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: 500;
+        }
+
+        .day-column.selected .day-num {
+            background-color: #385d8a;
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(56, 93, 138, 0.25);
+        }
+
+        .day-dot {
+            width: 4px;
+            height: 4px;
+            background-color: #0091DA;
+            border-radius: 50%;
+            margin-top: 2px;
+        }
+
+        .day-header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .icon-calendar-circle {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0091DA;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+        }
+
+        .day-header-title h3 {
+            font-size: 1.15rem;
+            color: #a0aec0;
+            font-weight: 400;
+        }
+
+        .timeline-grid {
+            position: relative;
+            padding-left: 55px;
+        }
+
+        .time-row {
+            position: relative;
+            height: 52px;
+            border-top: 1px solid #edf2f7;
+        }
+
+        .time-label {
+            position: absolute;
+            left: -55px;
+            top: -9px;
+            font-size: 0.78rem;
+            color: #cbd5e0;
+            font-weight: 500;
+        }
+
+        .current-time-line {
+            position: absolute;
+            top: 26px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #0091DA;
+            display: flex;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .current-time-line::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background-color: #0091DA;
+            border-radius: 50%;
+            margin-left: -5px;
+        }
+
+        /* CARTEL ALERTA ROJO PARA LA ENTREGA */
+        .cartel-entrega-rojo {
+            background-color: #fce8e6;
+            border: 1px solid #f5c6cb;
+            border-left: 4px solid #c5221f;
+            border-radius: 8px;
+            padding: 10px 12px;
+            position: absolute;
+            top: 6px;
+            left: 10px;
+            right: 10px;
+            z-index: 5;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            box-shadow: 0 2px 6px rgba(197, 34, 31, 0.08);
+        }
+
+        .cartel-entrega-rojo i {
+            color: #c5221f;
+            font-size: 1.1rem;
+            margin-top: 2px;
+        }
+
+        .cartel-entrega-rojo h5 {
+            color: #c5221f;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .cartel-entrega-rojo p {
+            color: #444;
+            font-size: 0.78rem;
+            line-height: 1.2;
+        }
 
         /* VISTAS DE PESTAÑAS PRINCIPALES */
         .main-tab-content {
@@ -179,7 +339,7 @@
             padding: 15px;
             margin-bottom: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            border-left: 4px solid #0091DA;
+            border-left: 4px solid #002B66;
         }
 
         .notif-card h4 {
@@ -265,7 +425,7 @@
             margin-top: 5px;
         }
 
-        /* TRÁMITES */
+        /* ================= SECCIÓN TRÁMITES CELESTES ================= */
         .search-bar-container {
             display: flex;
             align-items: center;
@@ -299,32 +459,64 @@
             letter-spacing: 0.5px;
         }
 
-        .tramite-card {
-            background: #ffffff;
-            border-radius: 10px;
-            padding: 15px;
+        .tramite-card-celeste {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e3effd 100%);
+            border-radius: 12px;
+            padding: 15px 16px;
             margin-bottom: 12px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            border-left: 4px solid #002B66;
+            box-shadow: 0 3px 10px rgba(0, 43, 102, 0.06);
+            border: 1px solid #c8e1ff;
+            border-left: 5px solid #0091DA;
         }
-        .tramite-card p {
-            font-size: 0.85rem;
-            color: #333;
-            line-height: 1.4;
+
+        .tramite-header {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #002B66;
+            margin-bottom: 8px;
+            line-height: 1.3;
         }
-        .leer-mas {
-            color: #0091DA;
-            font-weight: bold;
-            cursor: pointer;
+
+        .tramite-status-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.8rem;
+        }
+
+        .badge-tramite-finalizado {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background-color: #e6f4ea;
+            color: #137333;
+            border: 1px solid #ceebe1;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+
+        .badge-tramite-revision {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background-color: #feefc3;
+            color: #b06000;
+            border: 1px solid #fce8b2;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
         }
 
         /* MIS CURSOS */
         .materia-banner {
-            background-color: #b0c4de;
-            color: #001a3d;
-            font-weight: bold;
+            background-color: #002B66;
+            color: #ffffff;
+            font-weight: 700;
             font-size: 0.85rem;
-            padding: 12px 15px;
+            padding: 14px 15px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -349,7 +541,7 @@
         }
 
         .sub-tab.active {
-            color: #001a3d;
+            color: #002B66;
         }
 
         .sub-tab.active::after {
@@ -359,7 +551,7 @@
             left: 15%;
             width: 70%;
             height: 2px;
-            background-color: #001a3d;
+            background-color: #002B66;
         }
 
         .sub-content {
@@ -371,84 +563,277 @@
             display: block;
         }
 
+        /* SECCIÓN ARCHIVOS INTERACTIVA CON SLIDE */
         .file-card {
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: #ffffff;
-            border-radius: 4px;
-            margin-bottom: 15px;
+            border-radius: 6px;
+            margin-bottom: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border: 1px solid #eaeaea;
+            border: 1px solid #e2e8f0;
             overflow: hidden;
             height: 70px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .file-card:hover {
+            background-color: #f0f7ff;
         }
 
         .file-card-title {
             padding: 0 15px;
             font-weight: bold;
             font-size: 0.95rem;
-            color: #111;
+            color: #002B66;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-card-title i.fa-chevron-down {
+            font-size: 0.8rem;
+            color: #0091DA;
+            transition: transform 0.3s ease;
+        }
+
+        .file-card.open .fa-chevron-down {
+            transform: rotate(180deg);
         }
 
         .file-card-icon {
-            background-color: #b0c4de;
+            background-color: #e8f4fd;
             width: 75px;
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.3rem;
-            color: #001a3d;
+            color: #002B66;
         }
 
-        .nota-card {
-            background: #fff;
-            border-radius: 8px;
-            padding: 14px;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            border-left: 4px solid #002B66;
-        }
-        .nota-card h4 { font-size: 0.9rem; color: #002B66; margin-bottom: 6px; }
-        .nota-row { display: flex; justify-content: space-between; font-size: 0.8rem; color: #555; margin-top: 4px; }
-        .nota-val { font-weight: bold; color: #0091DA; }
-
-        .asistencia-header {
-            background: #f8f9fa;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        .asistencia-bar-container {
-            height: 8px;
-            background: #e0e0e0;
-            border-radius: 4px;
-            margin-top: 8px;
+        /* LISTA DESPLEGABLE (SLIDE) DE ARCHIVOS */
+        .files-slide-container {
+            max-height: 0;
             overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.3s ease;
+            background-color: #f0f7ff;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            padding: 0 12px;
+            border: 1px solid transparent;
         }
-        .asistencia-bar {
-            height: 100%;
-            width: 90%;
-            background: #28a745;
+
+        .files-slide-container.active {
+            max-height: 350px;
+            padding: 12px;
+            border-color: #b9d9fc;
         }
-        .asistencia-item {
+
+        .subfile-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            background: #ffffff;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border: 1px solid #d0e3ff;
+            font-size: 0.82rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .subfile-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .icon-pdf { color: #dc2626; font-size: 1.2rem; }
+        .icon-img { color: #0091DA; font-size: 1.2rem; }
+        .icon-video { color: #16a34a; font-size: 1.2rem; }
+        .icon-box { color: #d97706; font-size: 1.2rem; }
+
+        .subfile-info h6 {
+            font-size: 0.83rem;
+            color: #002B66;
+            font-weight: 700;
+        }
+
+        .subfile-info p {
+            font-size: 0.72rem;
+            color: #555;
+            margin-top: 2px;
+        }
+
+        /* TARJETAS DE NOTAS */
+        .nota-card {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e3effd 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+            box-shadow: 0 4px 12px rgba(0, 43, 102, 0.08);
+            border: 1px solid #c8e1ff;
+            border-left: 6px solid #002B66;
+        }
+
+        .nota-card h4 {
+            font-size: 1rem;
+            color: #001e4d;
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: -0.2px;
+        }
+
+        .nota-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 5px;
-            border-bottom: 1px solid #eee;
-            font-size: 0.82rem;
+            font-size: 0.84rem;
+            color: #1a4480;
+            margin-top: 6px;
+            padding-top: 4px;
+            border-top: 1px dashed rgba(0, 43, 102, 0.1);
         }
-        .badge-asist { font-weight: bold; padding: 2px 8px; border-radius: 10px; font-size: 0.72rem; }
-        .badge-presente { background: #e6f4ea; color: #137333; }
-        .badge-ausente { background: #fce8e6; color: #c5221f; }
-        .badge-feriado { background: #feefc3; color: #b06000; }
+
+        .nota-label {
+            font-weight: 600;
+        }
+
+        .nota-val {
+            font-weight: 800;
+            color: #002B66;
+            background-color: #ffffff;
+            padding: 2px 10px;
+            border-radius: 12px;
+            border: 1px solid #b9d9fc;
+            font-size: 0.8rem;
+        }
+
+        .nota-condicion-promocionado {
+            color: #137333;
+            font-weight: 800;
+            background-color: #e6f4ea;
+            padding: 3px 10px;
+            border-radius: 12px;
+            border: 1px solid #ceebe1;
+            font-size: 0.8rem;
+        }
+
+        .nota-condicion-cursando {
+            color: #b06000;
+            font-weight: 800;
+            background-color: #feefc3;
+            padding: 3px 10px;
+            border-radius: 12px;
+            border: 1px solid #fce8b2;
+            font-size: 0.8rem;
+        }
+
+        /* ESTILO ASISTENCIA */
+        .asistencia-top-box {
+            display: flex;
+            align-items: center;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 18px 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            gap: 20px;
+        }
+
+        .asistencia-circle-badge {
+            width: 90px;
+            height: 90px;
+            border: 6px solid #48bb78;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #2f855a;
+            font-weight: 800;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+            background-color: #f0fff4;
+        }
+
+        .asistencia-circle-badge span {
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: #4a5568;
+            text-transform: uppercase;
+            margin-top: -2px;
+        }
+
+        .asistencia-stats-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 0.83rem;
+            color: #2d3748;
+        }
+
+        .asistencia-stats-list div {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-num-bold {
+            font-weight: 800;
+            color: #1a202c;
+            min-width: 14px;
+        }
+
+        .asistencia-rows-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .asistencia-row-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 500;
+        }
+
+        .row-presente {
+            background-color: #e6f4ea;
+            color: #137333;
+            border: 1px solid #ceebe1;
+        }
+
+        .row-feriado {
+            background-color: #f1f3f4;
+            color: #5f6368;
+            border: 1px solid #e2e8f0;
+        }
+
+        .row-registrar {
+            background-color: #fdf8e2;
+            color: #b06000;
+            border: 1px solid #fef08a;
+        }
+
+        .asistencia-row-date {
+            color: #555;
+            font-weight: 600;
+        }
+
+        .asistencia-row-time {
+            color: #666;
+            font-size: 0.8rem;
+        }
 
         .novedad-card {
             background: #f0f7ff;
-            border-left: 4px solid #0091DA;
+            border-left: 4px solid #002B66;
             padding: 12px;
             border-radius: 6px;
             margin-bottom: 12px;
@@ -625,7 +1010,7 @@
         <!-- CONTENIDO PESTAÑA 1: MI UBA -->
         <div id="sec-miUba" class="main-tab-content active">
             <div class="banner-container">
-                <!-- CARRUSEL CON TUS IMÁGENES AJUSTADAS -->
+                <!-- CARRUSEL CON TUS IMÁGENES -->
                 <div class="carousel-container">
                     <div class="carousel-slide active">
                         <img src="semestrebannerdos.png" onerror="this.src='semestrebannerdos.jpg'" alt="Bienvenido al Semestre 2026">
@@ -636,20 +1021,88 @@
                 </div>
             </div>
 
-            <div class="calendar-header">
-                <i class="fa-solid fa-chevron-left"></i>
-                <span>noviembre 2026</span>
-                <i class="fa-solid fa-chevron-right"></i>
-            </div>
+            <!-- ESTRUCTURA CALENDARIO / CRONOGRAMA -->
+            <div class="calendar-wrapper">
+                
+                <!-- Navegación por meses -->
+                <div class="month-selector">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span>mayo - junio</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
 
-            <div class="week-days">
-                <div class="day-col"><span class="day-name">DOM.</span><span class="day-number">1</span></div>
-                <div class="day-col selected"><span class="day-name">LUN.</span><span class="day-number">2</span></div>
-                <div class="day-col"><span class="day-name">MAR.</span><span class="day-number">3</span></div>
-                <div class="day-col"><span class="day-name">MIÉ.</span><span class="day-number">4</span></div>
-                <div class="day-col"><span class="day-name">JUE.</span><span class="day-number">5</span></div>
-                <div class="day-col"><span class="day-name">VIE.</span><span class="day-number">6</span></div>
-                <div class="day-col"><span class="day-name">SÁB.</span><span class="day-number">7</span></div>
+                <!-- Grilla de días de la semana -->
+                <div class="week-grid">
+                    <div class="day-column">
+                        <span class="day-title">DOM.</span>
+                        <span class="day-num">28</span>
+                    </div>
+                    <div class="day-column">
+                        <span class="day-title">LUN.</span>
+                        <span class="day-num">29</span>
+                        <div class="day-dot"></div>
+                    </div>
+                    <div class="day-column selected">
+                        <span class="day-title">MAR.</span>
+                        <span class="day-num">30</span>
+                    </div>
+                    <div class="day-column">
+                        <span class="day-title">MIÉ.</span>
+                        <span class="day-num">31</span>
+                    </div>
+                    <div class="day-column">
+                        <span class="day-title">JUE.</span>
+                        <span class="day-num">1</span>
+                        <div class="day-dot"></div>
+                    </div>
+                    <div class="day-column">
+                        <span class="day-title">VIE.</span>
+                        <span class="day-num">2</span>
+                        <div class="day-dot"></div>
+                    </div>
+                    <div class="day-column">
+                        <span class="day-title">SÁB.</span>
+                        <span class="day-num">3</span>
+                        <div class="day-dot"></div>
+                    </div>
+                </div>
+
+                <!-- Encabezado del día -->
+                <div class="day-header-title">
+                    <div class="icon-calendar-circle">
+                        <i class="fa-solid fa-calendar-week"></i>
+                    </div>
+                    <h3>¿Cómo viene mi día?</h3>
+                </div>
+
+                <!-- Línea de tiempo horaria -->
+                <div class="timeline-grid">
+                    <div class="time-row"><span class="time-label">12:00</span></div>
+                    
+                    <div class="time-row">
+                        <span class="time-label">14:00</span>
+                        
+                        <!-- CARTEL DE ALERTA ROJO UBICADO A LAS 14:00 HS -->
+                        <div class="cartel-entrega-rojo">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <div>
+                                <h5>Entrega de Arquitectura y Proyecto II</h5>
+                                <p>Presentación obligatoria en <strong>Aula 128</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="time-row"><span class="time-label">16:00</span></div>
+                    
+                    <div class="time-row">
+                        <span class="time-label">18:00</span>
+                        <div class="current-time-line"></div>
+                    </div>
+                    
+                    <div class="time-row"><span class="time-label">20:00</span></div>
+                    <div class="time-row"><span class="time-label">22:00</span></div>
+                </div>
+
             </div>
         </div>
 
@@ -706,7 +1159,7 @@
         </div>
     </div>
 
-    <!-- ==================== VISTA: TRÁMITES ==================== -->
+    <!-- ==================== VISTA: TRÁMITES CELESTES ==================== -->
     <div id="vistaTramites" class="view-section" style="padding: 15px;">
         <div class="search-bar-container">
             <i class="fa-solid fa-magnifying-glass"></i>
@@ -715,11 +1168,31 @@
 
         <div class="section-subtitle">Mis trámites</div>
 
-        <div class="tramite-card">
-            <p>Inscripción a 1er recuperatorio IPC cátedra Buacar en curso <span class="leer-mas">leer más...</span></p>
+        <!-- TARJETA 1 -->
+        <div class="tramite-card-celeste">
+            <div class="tramite-header">Pedido de certificado de alumno regular aceptado</div>
+            <div class="tramite-status-row">
+                <span style="color:#555;">Estado del trámite:</span>
+                <span class="badge-tramite-finalizado"><i class="fa-solid fa-check-circle"></i> Trámites finalizado</span>
+            </div>
         </div>
-        <div class="tramite-card">
-            <p>Tu solicitud de inscripción a UBA Deportes sigue en curso <span class="leer-mas">leer más...</span></p>
+
+        <!-- TARJETA 2 -->
+        <div class="tramite-card-celeste">
+            <div class="tramite-header">Inscripción a materias segundo cuatrimestre</div>
+            <div class="tramite-status-row">
+                <span style="color:#555;">Estado del trámite:</span>
+                <span class="badge-tramite-revision"><i class="fa-solid fa-clock"></i> Trámite en revisión</span>
+            </div>
+        </div>
+
+        <!-- TARJETA 3 -->
+        <div class="tramite-card-celeste">
+            <div class="tramite-header">Inscripción a recuperatorio primer parcial</div>
+            <div class="tramite-status-row">
+                <span style="color:#555;">Estado del trámite:</span>
+                <span class="badge-tramite-revision"><i class="fa-solid fa-clock"></i> Trámite en revisión</span>
+            </div>
         </div>
     </div>
 
@@ -729,68 +1202,186 @@
 
         <div class="sub-nav-tabs">
             <div class="sub-tab" onclick="activarSubTab('notas', this)">NOTAS</div>
-            <div class="sub-tab" onclick="activarSubTab('asistencia', this)">ASISTENCIA</div>
-            <div class="sub-tab active" onclick="activarSubTab('archivos', this)">ARCHIVOS</div>
+            <div class="sub-tab active" onclick="activarSubTab('asistencia', this)">ASISTENCIA</div>
+            <div class="sub-tab" onclick="activarSubTab('archivos', this)">ARCHIVOS</div>
             <div class="sub-tab" onclick="activarSubTab('novedades', this)">NOVEDADES</div>
         </div>
 
-        <div id="sub-archivos" class="sub-content active">
-            <div class="file-card">
-                <div class="file-card-title">Apuntes del profesor</div>
+        <!-- PESTAÑA ARCHIVOS -->
+        <div id="sub-archivos" class="sub-content">
+            <div class="file-card" id="cardProfesor" onclick="toggleSlide('slideProfesor', 'cardProfesor')">
+                <div class="file-card-title">
+                    <span>Apuntes del profesor</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
                 <div class="file-card-icon"><i class="fa-solid fa-user-group"></i></div>
             </div>
-            <div class="file-card">
-                <div class="file-card-title">Apuntes de la materia</div>
-                <div class="file-card-icon"><i class="fa-solid fa-folder"></i></div>
-            </div>
-        </div>
 
-        <div id="sub-notas" class="sub-content">
-            <div class="nota-card">
-                <h4>Introducción a la Arquitectura</h4>
-                <div class="nota-row"><span>1° Parcial:</span><span class="nota-val">8 (Ocho)</span></div>
-                <div class="nota-row"><span>Entrega Final de Láminas:</span><span class="nota-val">9 (Nueve)</span></div>
-                <div class="nota-row"><span>Condición:</span><span style="color:#28a745; font-weight:bold;">Promocionado</span></div>
-            </div>
-            <div class="nota-card">
-                <h4>Proyecto Arquitectónico I</h4>
-                <div class="nota-row"><span>Entrega 1 - Maqueta:</span><span class="nota-val">7 (Siete)</span></div>
-                <div class="nota-row"><span>Entrega 2 - Bitácora:</span><span class="nota-val">8 (Ocho)</span></div>
-                <div class="nota-row"><span>Estado:</span><span>Cursando</span></div>
-            </div>
-            <div class="nota-card">
-                <h4>Estructuras I (Cátedra Diez)</h4>
-                <div class="nota-row"><span>Parcial Práctico:</span><span class="nota-val">9 (Nueve)</span></div>
-                <div class="nota-row"><span>Parcial Teórico:</span><span class="nota-val">8 (Ocho)</span></div>
-                <div class="nota-row"><span>Estado:</span><span>Aprobado</span></div>
-            </div>
-            <div class="nota-card">
-                <h4>Historia de la Arquitectura I</h4>
-                <div class="nota-row"><span>Trabajo Práctico:</span><span class="nota-val">10 (Diez)</span></div>
-                <div class="nota-row"><span>Examen Parcial:</span><span class="nota-val">8 (Ocho)</span></div>
-                <div class="nota-row"><span>Estado:</span><span>Aprobado</span></div>
-            </div>
-        </div>
-
-        <div id="sub-asistencia" class="sub-content">
-            <div class="asistencia-header">
-                <div style="font-size:0.85rem; font-weight:bold; color:#002B66;">Asistencia Noviembre 2026: 90%</div>
-                <div style="font-size:0.75rem; color:#666;">Faltas acumuladas: 1.0 de 4 permitidas</div>
-                <div class="asistencia-bar-container">
-                    <div class="asistencia-bar"></div>
+            <div class="files-slide-container" id="slideProfesor">
+                <div class="subfile-item">
+                    <i class="fa-solid fa-file-pdf icon-pdf"></i>
+                    <div class="subfile-info">
+                        <h6>Saber Ver la Arquitectura - Bruno Zevi.pdf</h6>
+                        <p>PDF • 14.2 MB • Lectura obligatoria</p>
+                    </div>
+                </div>
+                <div class="subfile-item">
+                    <i class="fa-solid fa-file-pdf icon-pdf"></i>
+                    <div class="subfile-info">
+                        <h6>Pensar la Arquitectura - Peter Zumthor.pdf</h6>
+                        <p>PDF • 8.5 MB • Referencia teórica</p>
+                    </div>
+                </div>
+                <div class="subfile-item">
+                    <i class="fa-solid fa-toolbox icon-box"></i>
+                    <div class="subfile-info">
+                        <h6>Caja de Herramientas de la Materia</h6>
+                        <p>Guía teórica y pautas formales de entrega FADU</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="asistencia-item"><span>Lunes 02/11 (Hoy)</span><span class="badge-asist badge-presente">Presente</span></div>
-            <div class="asistencia-item"><span>Martes 03/11</span><span class="badge-asist badge-presente">Presente</span></div>
-            <div class="asistencia-item"><span>Jueves 05/11</span><span class="badge-asist badge-presente">Presente</span></div>
-            <div class="asistencia-item"><span>Martes 10/11</span><span class="badge-asist badge-presente">Presente</span></div>
-            <div class="asistencia-item"><span>Jueves 12/11</span><span class="badge-asist badge-ausente">Ausente</span></div>
-            <div class="asistencia-item"><span>Martes 17/11</span><span class="badge-asist badge-presente">Presente</span></div>
-            <div class="asistencia-item"><span>Jueves 19/11</span><span class="badge-asist badge-presente">Presente</span></div>
-            <div class="asistencia-item"><span>Viernes 20/11 (Día de la Soberanía Nacional)</span><span class="badge-asist badge-feriado">Feriado</span></div>
-            <div class="asistencia-item"><span>Martes 24/11</span><span class="badge-asist badge-presente">Presente</span></div>
-            <div class="asistencia-item"><span>Jueves 26/11</span><span class="badge-asist badge-presente">Presente</span></div>
+            <div class="file-card" id="cardMateria" onclick="toggleSlide('slideMateria', 'cardMateria')">
+                <div class="file-card-title">
+                    <span>Apuntes de la materia</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="file-card-icon"><i class="fa-solid fa-folder"></i></div>
+            </div>
+
+            <div class="files-slide-container" id="slideMateria">
+                <div class="subfile-item">
+                    <i class="fa-solid fa-image icon-img"></i>
+                    <div class="subfile-info">
+                        <h6>Fotos de Maquetas de Referencia</h6>
+                        <p>Galeria JPG • Entregas destacadas 2025/2026</p>
+                    </div>
+                </div>
+                <div class="subfile-item">
+                    <i class="fa-solid fa-circle-play icon-video"></i>
+                    <div class="subfile-info">
+                        <h6>Grabación de Clase Teórica - Cátedra Negro</h6>
+                        <p>Video MP4 • 1h 45min • Taller Pabellón III</p>
+                    </div>
+                </div>
+                <div class="subfile-item">
+                    <i class="fa-solid fa-box-open icon-box"></i>
+                    <div class="subfile-info">
+                        <h6>Caja de Herramientas de Alumnos</h6>
+                        <p>Plantillas de láminas, bloques CAD y recursos de la cursada</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PESTAÑA NOTAS -->
+        <div id="sub-notas" class="sub-content">
+            <div class="nota-card">
+                <h4>Introducción a la Arquitectura</h4>
+                <div class="nota-row"><span class="nota-label">1° Parcial:</span><span class="nota-val">8 (Ocho)</span></div>
+                <div class="nota-row"><span class="nota-label">Entrega Final de Láminas:</span><span class="nota-val">9 (Nueve)</span></div>
+                <div class="nota-row"><span class="nota-label">Condición:</span><span class="nota-condicion-promocionado">Promocionado</span></div>
+            </div>
+
+            <div class="nota-card">
+                <h4>Proyecto Arquitectónico I</h4>
+                <div class="nota-row"><span class="nota-label">Entrega 1 - Maqueta:</span><span class="nota-val">7 (Siete)</span></div>
+                <div class="nota-row"><span class="nota-label">Entrega 2 - Bitácora:</span><span class="nota-val">8 (Ocho)</span></div>
+                <div class="nota-row"><span class="nota-label">Estado:</span><span class="nota-condicion-cursando">Cursando</span></div>
+            </div>
+
+            <div class="nota-card">
+                <h4>Estructuras I (Cátedra Diez)</h4>
+                <div class="nota-row"><span class="nota-label">Parcial Práctico:</span><span class="nota-val">9 (Nueve)</span></div>
+                <div class="nota-row"><span class="nota-label">Parcial Teórico:</span><span class="nota-val">8 (Ocho)</span></div>
+                <div class="nota-row"><span class="nota-label">Estado:</span><span class="nota-condicion-promocionado">Aprobado</span></div>
+            </div>
+
+            <div class="nota-card">
+                <h4>Historia de la Arquitectura I</h4>
+                <div class="nota-row"><span class="nota-label">Trabajo Práctico:</span><span class="nota-val">10 (Diez)</span></div>
+                <div class="nota-row"><span class="nota-label">Examen Parcial:</span><span class="nota-val">8 (Ocho)</span></div>
+                <div class="nota-row"><span class="nota-label">Estado:</span><span class="nota-condicion-promocionado">Aprobado</span></div>
+            </div>
+        </div>
+
+        <!-- PESTAÑA ASISTENCIA -->
+        <div id="sub-asistencia" class="sub-content active">
+            <div class="asistencia-top-box">
+                <div class="asistencia-circle-badge">
+                    100%
+                    <span>de asistencia</span>
+                </div>
+                <div class="asistencia-stats-list">
+                    <div><span class="stat-num-bold">15</span> Total clases cuatrimestre</div>
+                    <div><span class="stat-num-bold">9</span> Clases dictadas</div>
+                    <div><span class="stat-num-bold" style="color: #2f855a;">9</span> Asistencias</div>
+                    <div><span class="stat-num-bold" style="color: #c5221f;">0</span> Inasistencias</div>
+                </div>
+            </div>
+
+            <div class="asistencia-rows-container">
+                <div class="asistencia-row-item row-presente">
+                    <span><i class="fa-solid fa-check"></i> Presente</span>
+                    <span class="asistencia-row-date">Ju 16/03</span>
+                    <span class="asistencia-row-time">18:30</span>
+                </div>
+                <div class="asistencia-row-item row-presente">
+                    <span><i class="fa-solid fa-check"></i> Presente</span>
+                    <span class="asistencia-row-date">Ju 23/03</span>
+                    <span class="asistencia-row-time">18:30</span>
+                </div>
+                <div class="asistencia-row-item row-presente">
+                    <span><i class="fa-solid fa-check"></i> Presente</span>
+                    <span class="asistencia-row-date">Ju 30/03</span>
+                    <span class="asistencia-row-time">18:30</span>
+                </div>
+                <div class="asistencia-row-item row-feriado">
+                    <span>&mdash; Feriado</span>
+                    <span class="asistencia-row-date">Ju 06/04</span>
+                    <span class="asistencia-row-time">18:30</span>
+                </div>
+                <div class="asistencia-row-item row-presente">
+                    <span><i class="fa-solid fa-check"></i> Presente</span>
+                    <span class="asistencia-row-date">Ju 13/04</span>
+                    <span class="asistencia-row-time">18:30</span>
+                </div>
+                <div class="asistencia-row-item row-presente">
+                    <span><i class="fa-solid fa-check"></i> Presente</span>
+                    <span class="asistencia-row-date">Ju 20/04</span>
+                    <span class="asistencia-row-time">18:30</span>
+                </div>
+                <div class="asistencia-row-item row-presente">
+                    <span><i class="fa-solid fa-check"></i> Presente</span>
+                    <span class="asistencia-row-date">Ju 27/04</span>
+                    <span class="asistencia-row-time">18:30</span>
+                </div>
+                <div class="asistencia-row-item row-presente">
+                    <span><i class="fa-solid fa-check"></i> Presente</span>
+                    <span class="asistencia-row-date">Ju 04/05</span>
+                    <span class="asistencia-row-time">18:30</span>
+                </div>
+                <div class="asistencia-row-item row-presente">
+                    <span><i class="fa-solid fa-check"></i> Presente</span>
+                    <span class="asistencia-row-date">Ju 11/05</span>
+                    <span class="asistencia-row-time">18:30</span>
+                </div>
+                <div class="asistencia-row-item row-feriado">
+                    <span>&mdash; Feriado</span>
+                    <span class="asistencia-row-date">Ju 18/05</span>
+                    <span class="asistencia-row-time">18:30</span>
+                </div>
+                <div class="asistencia-row-item row-registrar">
+                    <span>&bull;&bull;&bull; S/ registrar</span>
+                    <span class="asistencia-row-date">Ju 25/05</span>
+                    <span class="asistencia-row-time">18:30</span>
+                </div>
+                <div class="asistencia-row-item row-registrar">
+                    <span>&bull;&bull;&bull; S/ registrar</span>
+                    <span class="asistencia-row-date">Ju 01/06</span>
+                    <span class="asistencia-row-time">18:30</span>
+                </div>
+            </div>
         </div>
 
         <div id="sub-novedades" class="sub-content">
@@ -931,6 +1522,15 @@
 
             document.getElementById('sub-' + nombreSubTab).classList.add('active');
             elementoTab.classList.add('active');
+        }
+
+        /* FUNCIÓN PARA ABRIR Y CERRAR LOS SLIDES DE ARCHIVOS */
+        function toggleSlide(slideId, cardId) {
+            const container = document.getElementById(slideId);
+            const card = document.getElementById(cardId);
+            
+            container.classList.toggle('active');
+            card.classList.toggle('open');
         }
 
         /* FUNCIONES DE LA CREDENCIAL DIGITAL */
